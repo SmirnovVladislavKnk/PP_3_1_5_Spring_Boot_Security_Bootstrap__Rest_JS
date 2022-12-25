@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 import ru.vladislav_smirnov.spring_boot_security.model.Role;
 import ru.vladislav_smirnov.spring_boot_security.repositories.RoleRepository;
 
-import java.util.Collection;
+import java.util.List;
 
 @Service
 public class RoleServiceImpl implements RoleService{
@@ -16,7 +16,12 @@ public class RoleServiceImpl implements RoleService{
     }
 
     @Override
-    public Collection<Role> getAllRoles() {
+    public List<Role> getAllRoles() {
         return roleRepository.findAll();
+    }
+
+    @Override
+    public void saveRole(Role role) {
+        roleRepository.save(role);
     }
 }

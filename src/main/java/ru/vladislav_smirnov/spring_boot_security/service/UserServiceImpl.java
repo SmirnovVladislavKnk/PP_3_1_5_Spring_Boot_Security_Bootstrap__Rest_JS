@@ -50,12 +50,30 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(Long id, User user) {
-        user.setId(id);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
+    @org.springframework.transaction.annotation.Transactional
+    public User findById(Long id) {
+
+        return userRepository.findById(id).orElse(null);
     }
 
+    @Override
+    @org.springframework.transaction.annotation.Transactional
+    public void updateUser(User user) {
+        //Берем старого юзера по id
+        User userDB = findById(user.getId());
+        /*
+        Сравниваем пароли новый и старого юзера,
+        если не равны и у нового не пустой, то устанавливаем новый, иначе сетим старый
+         */
+        if (!(passwordEncoder.matches(user.getPassword(), userDB.getPassword()))
+                && (user.getPassword() != null)
+                && !(user.getPassword().equals(""))) {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        } else {
+            user.setPassword(userDB.getPassword());
+        }
+        userRepository.save(user);
+    }
 
     @Override
     @Transactional

@@ -28,6 +28,7 @@ public class InitDefaultUsersWithRoles {
     public void createUsersWithRoles() {
         if(roleService.getAllRoles().isEmpty()) {
             Role role_admin = new Role("ROLE_ADMIN");
+            roleService.saveRole(role_admin);
             Collection<Role> role_ad = new HashSet<>();
             role_ad.add(role_admin);
             User admin= new User();
@@ -40,6 +41,7 @@ public class InitDefaultUsersWithRoles {
             userService.saveUsers(admin); // Login: admin@mail.ru; Password: admin.
 
             Role role_user = new Role("ROLE_USER");
+            roleService.saveRole(role_user);
             Collection<Role> role_us = new HashSet<>();
             role_us.add(role_user);
             User user = new User();
